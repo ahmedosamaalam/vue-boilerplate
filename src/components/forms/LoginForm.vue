@@ -23,12 +23,8 @@
                 v-model="form.email"
                 :disabled="sending"
               />
-              <span class="md-error" v-if="!$v.form.email.required"
-                >The email is required</span
-              >
-              <span class="md-error" v-else-if="!$v.form.email.email"
-                >Invalid email</span
-              >
+              <span class="md-error" v-if="!$v.form.email.required">The email is required</span>
+              <span class="md-error" v-else-if="!$v.form.email.email">Invalid email</span>
             </md-field>
           </div>
           <div class="md-layout-item md-small-size-100">
@@ -41,12 +37,8 @@
                 v-model="form.password"
                 :disabled="sending"
               />
-              <span class="md-error" v-if="!$v.form.password.required"
-                >Password is required</span
-              >
-              <span class="md-error" v-else-if="!$v.form.password.minlength"
-                >Invalid password</span
-              >
+              <span class="md-error" v-if="!$v.form.password.required">Password is required</span>
+              <span class="md-error" v-else-if="!$v.form.password.minlength">Invalid password</span>
             </md-field>
           </div>
         </md-card-content>
@@ -54,9 +46,7 @@
         <md-progress-bar md-mode="indeterminate" v-if="sending" />
 
         <md-card-actions>
-          <md-button type="submit" class="md-primary" :disabled="sending"
-            >Login</md-button
-          >
+          <md-button type="submit" class="md-primary" :disabled="sending">Login</md-button>
         </md-card-actions>
       </md-card>
 
@@ -72,14 +62,17 @@ import { required, email, minLength } from 'vuelidate/lib/validators';
 export default {
   name: 'LoginForm',
   mixins: [validationMixin],
-  props: { title: String },
+  props: {
+    title: String,
+    submit: Function,
+    sending: Boolean,
+    submitForm: Boolean,
+  },
   data: () => ({
     form: {
       email: null,
       password: null,
     },
-    sending: false,
-    submitForm: false,
   }),
   validations: {
     form: {
@@ -115,16 +108,11 @@ export default {
       }
     },
     saveUser() {
-      this.sending = true;
-
-      // Instead of this timeout, here you can call your API
-      window.setTimeout(() => {
-        console.log(`${this.form.email} ${this.form.password}`);
-        this.lastUser = `${this.form.email} ${this.form.password}`;
-        this.sending = false;
-        this.submitForm = true;
-        this.clearForm();
-      }, 1500);
+      const payload = {
+        email: this.form.email,
+        password: this.form.password,
+      };
+      this.$emit('submit', payload);
     },
   },
 };
