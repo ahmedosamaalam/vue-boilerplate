@@ -13,7 +13,7 @@
 <script>
 // @ is an alias to /src
 import LoginForm from '@/components/forms/LoginForm.vue';
-
+import { authMethods } from '@/store/modules/user/helper.js';
 export default {
   name: 'Login',
   data: () => ({
@@ -24,14 +24,22 @@ export default {
     LoginForm,
   },
   methods: {
-    onSubmitForm(payload) {
-      (this.sending = true), (this.submitForm = true);
-      console.log('paylog', payload);
+    ...authMethods,
 
-      window.setTimeout(() => {
-        (this.sending = false), (this.submitForm = false);
-        this.$refs.form.clearForm();
-      }, 1500);
+    onSubmitForm(payload) {
+      this.sending = true;
+      this.submitForm = true;
+
+      this.logIn(payload)
+        .then(() => {
+          this.$router.push('/about');
+          this.sending = false;
+          this.submitForm = false;
+          this.$refs.form.clearForm();
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
   },
 };
