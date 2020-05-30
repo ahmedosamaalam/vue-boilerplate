@@ -32,7 +32,6 @@ export default {
   // Validates the current user's token and refreshes it
   // with new data from the API.
   validate({ commit, state }) {
-    console.log('validate');
     if (!state.currentUser) return Promise.resolve(null);
 
     return axios

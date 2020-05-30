@@ -32,7 +32,7 @@ export default {
 
       this.logIn(payload)
         .then(() => {
-          this.$router.push('/about');
+          this.$router.push('/dashboard');
           this.sending = false;
           this.submitForm = false;
           this.$refs.form.clearForm();

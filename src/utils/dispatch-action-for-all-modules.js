@@ -1,5 +1,5 @@
-import allModules from '@state/modules';
-import store from '@store';
+import allModules from '../store/modules/index.js';
+import store from '../store/index.js';
 
 export default function dispatchActionForAllModules(
   actionName,
